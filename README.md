@@ -44,3 +44,25 @@
 - Pandas для работы с Excel
 - Pydantic для валидации данных
 - CORS поддержка для веб-интерфейса
+
+<h2>Инструкция по запуску</h2>
+1. **Клонирование репозитория**
+```bash
+git clone https://github.com/yourusername/labor-tracker.git
+cd labor-tracker
+2. **Установка зависимостей**
+bash
+pip install -r requirements.txt
+3. **Настройка базы данных**
+
+- Создайте базу данных PostgreSQL
+- Обновите строку подключения в database.py:
+
+python
+POSTGRESQL_DATABASE_URL = "postgresql+psycopg2://username:password@localhost:port/database_name"
+4. **Запуск приложения**
+bash
+python main.py
+
+5. **Доступ к приложению**
+Откройте в браузере: http://127.0.0.1:7000
