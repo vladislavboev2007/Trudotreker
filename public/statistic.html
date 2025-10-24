@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика - Трудотрекер</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: url("/static/background.png") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+    /* Top navigation */
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: #d32f2f;
+      color: white;
+      padding: 10px 20px;
+      border-bottom: 3px solid #b71c1c;
+      border-radius: 15px 15px 15px 15px;
+      margin: 10px 15px 0 15px; /* Добавить эту строку */
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+      flex: 1;
+      font-weight: bold;
+      cursor: pointer; /* Добавить эту строку */
+    }
+
+    .navbar button {
+      background: #b71c1c;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background: #880e4f;
+      transform: translateY(-1px);
+    }
+
+    /* Page title */
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    /* Separator line */
+    .separator {
+      height: 2px;
+      background: #ddd;
+      width: 90%;
+      margin: 20px auto;
+    }
+
+    /* Statistics section */
+    .statistics {
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .stat-item:nth-child(2) {
+      background: lightblue;
+      border: 2px solid blue;
+    }
+
+    .stat-item:nth-child(3) {
+      background: lightyellow;
+      border: 2px solid yellow;
+    }
+
+    .stat-item:nth-child(4) {
+      background: lightgreen;
+      border: 2px solid green;
+    }
+
+    .stat-label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin: 25px 0 15px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+      font-weight: 600;
+    }
+
+    /* Контейнер таблицы */
+    .table-container {
+      width: 100%;
+      max-height: 40vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      scrollbar-width: none;
+      margin-top: 15px;
+    }
+
+    .table-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Statistics table */
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .stats-table th, .stats-table td {
+      border: 0px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stats-table th {
+      background: #f5f5f5;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .stats-table tr:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1 onclick="location.href='/'">Трудотрекер</h1>
+    <button onclick="location.href='/employees'">Сотрудники</button>
+    <button onclick="location.href='/'">Главная</button>
+  </div>
+
+  <!-- Title -->
+  <h2>Статистика</h2>
+
+  <!-- Separator -->
+  <div class="separator"></div>
+
+  <!-- Statistics container -->
+  <div class="statistics">
+    <div class="section-title">Общая статистика</div>
+
+    <div class="stat-item">
+      <span class="stat-label">Общее время работы:</span>
+      <span class="stat-value" id="totalTime">00:00:00</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-label">Всего задач:</span>
+      <span class="stat-value" id="totalTasks">0</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-label">Всего завершенных задач:</span>
+      <span class="stat-value" id="completedTasks">0</span>
+    </div>
+
+    <div class="section-title">Работы по дням (последние 7 дней)</div>
+
+    <div class="table-container">
+      <table class="stats-table" id="dailyWorkTable">
+        <thead>
+          <tr>
+            <th>Время работы</th>
+            <th>Дата</th>
+            <th>ФИО сотрудника</th>
+          </tr>
+        </thead>
+        <tbody id="dailyWorkBody">
+          <!-- Данные будут загружены через JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Загрузка статистики при открытии страницы
+    async function loadStatistics() {
+      try {
+        const response = await fetch('/api/statistics');
+        const statistics = await response.json();
+
+        // Обновляем общую статистику
+        document.getElementById('totalTime').textContent = statistics.total_time;
+        document.getElementById('totalTasks').textContent = statistics.total_tasks;
+        document.getElementById('completedTasks').textContent = statistics.completed_tasks;
+
+        // Обновляем таблицу работ по дням
+        const tbody = document.getElementById('dailyWorkBody');
+        tbody.innerHTML = '';
+
+        statistics.daily_work.forEach(work => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${work.time}</td>
+            <td>${work.date}</td>
+            <td>${work.FIO}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Ошибка загрузки статистики:', error);
+      }
+    }
+
+    // Загружаем статистику при загрузке страницы
+    document.addEventListener('DOMContentLoaded', loadStatistics);
+  </script>
+
+</body>
+</html>
