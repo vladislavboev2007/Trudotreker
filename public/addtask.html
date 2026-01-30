@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Добавить задание - Трудотрекер</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Стили остаются такими же */
+    body {
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: url("/static/background.png") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: #d32f2f;
+      color: white;
+      padding: 10px 20px;
+      border-bottom: 3px solid #b71c1c;
+      border-radius: 15px 15px 15px 15px;
+      margin: 10px 15px 0 15px; /* Добавить эту строку */
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+      flex: 1;
+      font-weight: bold;
+      cursor: pointer; /* Добавить эту строку */
+    }
+
+    .navbar button {
+      background: #b71c1c;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+    }
+
+    .form-container {
+      width: 90%;
+      max-width: 500px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .optional {
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .employee-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .employee-selector select {
+      flex: 1;
+    }
+
+    .cancel-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+    }
+
+    .add-employee-link {
+      display: block;
+      margin-top: 10px;
+      color: #2196f3;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .submit-btn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 10px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1 onclick="location.href='/'">Трудотрекер</h1>
+    <button onclick="location.href='/'">На главную</button>
+    <button onclick="location.href='/employees'">Сотрудники</button>
+  </div>
+
+  <div class="form-container">
+    <h2 class="form-title">Добавить задание</h2>
+
+    <form id="add-task-form">
+      <div class="form-group">
+        <label for="task-name">Название задачи:</label>
+        <input type="text" id="task-name" name="task-name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="task-description">Описание задачи: <span class="optional">(необязательно)</span></label>
+        <textarea id="task-description" name="task-description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="employee">Сотрудник:</label>
+        <div class="employee-selector">
+          <select id="employee" name="employee" required>
+            <option value="">Загрузка сотрудников...</option>
+          </select>
+          <button type="button" class="cancel-btn" onclick="clearEmployeeSelection()">Отмена</button>
+        </div>
+        <a href="/addemployee" class="add-employee-link">Нет в списке сотрудника? Добавьте его.</a>
+      </div>
+
+      <button type="submit" class="submit-btn">Добавить задачу</button>
+    </form>
+  </div>
+
+  <script>
+    // Загрузка списка сотрудников
+    async function loadEmployees() {
+      try {
+        const response = await fetch('/api/employees');
+        const employees = await response.json();
+
+        const select = document.getElementById('employee');
+        select.innerHTML = '<option value="">Выберите сотрудника</option>';
+
+        employees.forEach(emp => {
+          const option = document.createElement('option');
+          option.value = emp.empId;
+          option.textContent = emp.FIO;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Ошибка загрузки сотрудников:', error);
+      }
+    }
+
+    // Очистка выбора сотрудника
+    function clearEmployeeSelection() {
+      document.getElementById('employee').selectedIndex = 0;
+    }
+
+    // Обработка отправки формы
+    document.getElementById('add-task-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const taskName = document.getElementById('task-name').value;
+  const taskDescription = document.getElementById('task-description').value;
+  const employeeId = document.getElementById('employee').value;
+
+  if (!employeeId) {
+    alert('Пожалуйста, выберите сотрудника');
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: taskName,
+        description: taskDescription,
+        empId: parseInt(employeeId)
+      })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      // Перенаправляем с параметром для показа сообщения
+      location.href = `/?message=created&taskId=${result.taskId}&taskName=${encodeURIComponent(taskName)}`;
+    } else {
+      alert('Ошибка при добавлении задачи');
+    }
+  } catch (error) {
+    console.error('Ошибка:', error);
+    alert('Ошибка при добавлении задачи');
+  }
+});
+    // Загружаем сотрудников при загрузке страницы
+    document.addEventListener('DOMContentLoaded', loadEmployees);
+  </script>
+
+</body>
+</html>

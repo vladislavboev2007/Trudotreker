@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сотрудники - Трудотрекер</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+    margin: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: url("/static/background.png") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+    /* Top navigation */
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: #d32f2f;
+      color: white;
+      padding: 10px 20px;
+      border-bottom: 3px solid #b71c1c;
+      border-radius: 15px 15px 15px 15px;
+      margin: 10px 15px 0 15px;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+      flex: 1;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar button {
+      background: #b71c1c;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background: #880e4f;
+      transform: translateY(-1px);
+    }
+
+    /* Page title */
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    /* Separator line */
+    .separator {
+      height: 2px;
+      background: #ddd;
+      width: 90%;
+      margin: 20px auto;
+    }
+
+    /* Employee controls */
+    .employee-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px auto;
+      width: 90%;
+    }
+
+    .employee-controls button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Montserrat', Arial, sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .add-employee {
+      background: #4caf50;
+      color: white;
+    }
+
+    .add-employee:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .delete-employee {
+      background: #f44336;
+      color: white;
+    }
+
+    .delete-employee:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Контейнер таблицы */
+    .table-container {
+      width: 50%;
+      margin: 20px auto;
+      max-height: 60vh;
+      overflow-x: auto;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      scrollbar-width: none;
+    }
+
+    .table-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Employee table */
+    .employee-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    .employee-table th, .employee-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+      font-size: 16px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .employee-table th {
+      background: #f5f5f5;
+      font-weight: 600;
+      cursor: default;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .employee-table tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .employee-table tr.selected {
+      background-color: #e3f2fd;
+    }
+
+    .id-cell {
+      width: 100px;
+    }
+
+    .actions-cell {
+      width: 200px;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.1);
+    }
+
+    .action-btn img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .word-btn:hover {
+      background-color: #87b2f5;
+    }
+
+    .excel-btn:hover {
+      background-color: #54ffa1;
+    }
+
+    .pdf-btn:hover {
+      background-color: #ff756e;
+    }
+
+    .additional-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .additional-btn {
+      background: #b71c1c;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .additional-btn:hover {
+      background: #880e4f;
+      transform: translateY(-1px);
+    }
+
+    .additional-btn img {
+      width: 20px;
+      height: 20px;
+      filter: invert(1);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .dropdown-content.show {
+      display: block;
+    }
+
+    .dropdown-content button {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      border: none;
+      background: white;
+      cursor: pointer;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 14px;
+      text-align: left;
+      transition: background-color 0.3s ease;
+    }
+
+    .dropdown-content button:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-content button.delete-all {
+      color: #f44336;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1 onclick="location.href='/'">Трудотрекер</h1>
+    <button onclick="location.href='/statistic'">Статистика</button>
+    <button onclick="location.href='/'">Главная</button>
+  </div>
+
+  <!-- Title -->
+  <h2>Сотрудники</h2>
+
+  <!-- Separator -->
+  <div class="separator"></div>
+
+  <!-- Employee controls -->
+  <div class="employee-controls">
+    <button class="add-employee" onclick="location.href='/addemployee'">Добавить сотрудника</button>
+    <button class="delete-employee" onclick="deleteSelectedEmployee()">Удалить сотрудника</button>
+
+    <div class="additional-menu">
+        <button class="additional-btn" id="additionalBtn">
+            <img src="/static/additional.png" alt="Дополнительно">
+        </button>
+        <div class="dropdown-content" id="additionalDropdown">
+            <button onclick="exportEmployees()">Экспорт</button>
+            <button onclick="importEmployees()">Импорт</button>
+            <button class="delete-all" onclick="deleteAllEmployees()">Удалить все</button>
+        </div>
+    </div>
+  </div>
+
+  <!-- Separator -->
+  <div class="separator"></div>
+
+  <!-- Employee table container -->
+  <div class="table-container">
+    <table class="employee-table" id="employeesTable">
+      <thead>
+        <tr>
+          <th class="id-cell">ID сотрудника</th>
+          <th>ФИО сотрудника</th>
+          <th class="actions-cell">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="employeesTableBody">
+        <!-- Данные будут загружены через JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let employees = [];
+    let selectedEmployeeId = null;
+
+    // Загрузка сотрудников при открытии страницы
+    async function loadEmployees() {
+      try {
+        const response = await fetch('/api/employees');
+        employees = await response.json();
+        displayEmployees(employees);
+      } catch (error) {
+        console.error('Ошибка загрузки сотрудников:', error);
+      }
+    }
+
+    // Отображение сотрудников в таблице
+    function displayEmployees(employeesToDisplay) {
+      const tbody = document.getElementById('employeesTableBody');
+      tbody.innerHTML = '';
+
+      employeesToDisplay.forEach(emp => {
+        const row = document.createElement('tr');
+        row.dataset.id = emp.empId;
+
+        row.innerHTML = `
+          <td class="id-cell">${emp.empId}</td>
+          <td>${emp.FIO}</td>
+          <td class="actions-cell">
+            <div class="action-buttons">
+              <button class="action-btn word-btn" onclick="exportToWord(${emp.empId}, '${emp.FIO}')" title="Экспорт в Word">
+                <img src="/static/word.png" alt="Word">
+              </button>
+              <button class="action-btn excel-btn" onclick="exportToExcel(${emp.empId}, '${emp.FIO}')" title="Экспорт в Excel">
+                <img src="/static/excel.png" alt="Excel">
+              </button>
+              <button class="action-btn pdf-btn" onclick="exportToPDF(${emp.empId}, '${emp.FIO}')" title="Экспорт в PDF">
+                <img src="/static/pdf.png" alt="PDF">
+              </button>
+            </div>
+          </td>
+        `;
+
+        // Обработчик выбора строки (исключаем клики по кнопкам действий)
+        row.addEventListener('click', function(e) {
+          if (!e.target.closest('.action-btn')) {
+            // Снимаем выделение со всех строк
+            document.querySelectorAll('.employee-table tr').forEach(r => {
+              r.classList.remove('selected');
+            });
+            // Выделяем текущую строку
+            this.classList.add('selected');
+            selectedEmployeeId = parseInt(this.dataset.id);
+          }
+        });
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // Функции экспорта для каждой кнопки
+    function exportToWord(empId, empName) {
+      alert(`Экспорт сотрудника "${empName}" (ID: ${empId}) в Word\nФункция в разработке`);
+      // Здесь будет реализация экспорта в Word
+    }
+
+    function exportToExcel(empId, empName) {
+      alert(`Экспорт сотрудника "${empName}" (ID: ${empId}) в Excel\nФункция в разработке`);
+      // Здесь будет реализация экспорта в Excel для конкретного сотрудника
+    }
+
+    function exportToPDF(empId, empName) {
+      alert(`Экспорт сотрудника "${empName}" (ID: ${empId}) в PDF\nФункция в разработке`);
+      // Здесь будет реализация экспорта в PDF
+    }
+
+    // Удаление выбранного сотрудника
+    async function deleteSelectedEmployee() {
+      if (!selectedEmployeeId) {
+        alert('Пожалуйста, выберите сотрудника для удаления.');
+        return;
+      }
+
+      const employee = employees.find(emp => emp.empId === selectedEmployeeId);
+      if (!employee) return;
+
+      if (confirm(`Вы уверены, что хотите удалить сотрудника?\n${employee.FIO}`)) {
+        try {
+          const response = await fetch(`/api/employees/${selectedEmployeeId}`, {
+            method: 'DELETE'
+          });
+
+          if (response.ok) {
+            alert('Сотрудник успешно удален!');
+            await loadEmployees();
+            selectedEmployeeId = null;
+          } else {
+            const error = await response.json();
+            alert(`Ошибка при удалении сотрудника: ${error.detail}`);
+          }
+        } catch (error) {
+          console.error('Ошибка:', error);
+          alert('Ошибка при удалении сотрудника');
+        }
+      }
+    }
+
+    // Загружаем сотрудников при загрузке страницы
+    document.addEventListener('DOMContentLoaded', loadEmployees);
+
+    // Additional menu functionality for employees
+    document.getElementById('additionalBtn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('additionalDropdown').classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      document.getElementById('additionalDropdown').classList.remove('show');
+    });
+    // Функция экспорта в Word (исправленная)
+    async function exportToWord(empId, empName) {
+        try {
+            const response = await fetch(`/api/employees/${empId}/report`);
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `report_${empName.replace(/ /g, '_')}.docx`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } else {
+                const error = await response.json();
+                alert(`Ошибка при экспорте в Word: ${error.detail}`);
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Ошибка при экспорте в Word');
+        }
+    }
+
+    // Функция экспорта в Excel
+async function exportToExcel(empId, empName) {
+    try {
+        const response = await fetch(`/api/employees/${empId}/excel-report`);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `excel_report_${empName.replace(/ /g, '_')}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } else {
+            const error = await response.json();
+            alert(`Ошибка при экспорте в Excel: ${error.detail}`);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Ошибка при экспорте в Excel');
+    }
+}
+
+    // Export employees to Excel
+    async function exportEmployees() {
+      try {
+        const response = await fetch('/api/export/employees');
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'export_employees.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          alert('Экспорт сотрудников завершен успешно');
+        } else {
+          alert('Ошибка при экспорте сотрудников');
+        }
+      } catch (error) {
+        console.error('Ошибка экспорта:', error);
+        alert('Ошибка при экспорте сотрудников');
+      }
+    }
+
+    async function exportToPDF(empId, empName) {
+    try {
+        const response = await fetch(`/api/employees/${empId}/pdf-report`);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `pdf_report_${empName.replace(/ /g, '_')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } else {
+            const error = await response.json();
+            alert(`Ошибка при экспорте в PDF: ${error.detail}`);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Ошибка при экспорте в PDF');
+    }
+}
+
+    // Функция импорта сотрудников
+    async function importEmployees() {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.xlsx, .xls';
+
+      fileInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('ignore_duplicates', 'true');
+
+        try {
+          const response = await fetch('/api/import/employees', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            let message = `Импорт завершен!\nВсего строк: ${result.total_rows}\nИмпортировано: ${result.imported_rows}\nПропущено: ${result.skipped_rows}`;
+
+            if (result.errors.length > 0) {
+              message += `\n\nОшибки:\n${result.errors.slice(0, 5).join('\n')}`;
+              if (result.errors.length > 5) {
+                message += `\n... и еще ${result.errors.length - 5} ошибок`;
+              }
+            }
+
+            alert(message);
+            await loadEmployees(); // Обновляем список
+          } else {
+            const error = await response.json();
+            alert(`Ошибка импорта: ${error.detail}`);
+          }
+        } catch (error) {
+          console.error('Ошибка импорта:', error);
+          alert('Ошибка при импорте файла');
+        }
+      };
+
+      fileInput.click();
+    }
+
+    // Delete all employees
+    async function deleteAllEmployees() {
+      if (!confirm('Вы уверены, что хотите удалить ВСЕХ сотрудников? Это действие нельзя отменить.')) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/employees', {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          alert('Все сотрудники успешно удалены');
+          await loadEmployees();
+          selectedEmployeeId = null;
+        } else {
+          const error = await response.json();
+          alert(`Ошибка при удалении сотрудников: ${error.detail}`);
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Ошибка при удалении сотрудников');
+      }
+    }
+
+
+  </script>
+
+</body>
+</html>
