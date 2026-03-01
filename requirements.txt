@@ -1,0 +1,33 @@
+# Основные веб-фреймворки
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# База данных
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+
+# Работа с документами
+python-docx==1.1.0
+openpyxl==3.1.2
+pandas==2.1.4
+
+# PDF генерация
+reportlab==4.0.7
+matplotlib==3.8.2
+
+# CORS поддержка
+fastapi-cors==0.1.0
+
+# Для работы с файлами и данными
+python-dateutil==2.8.2
+pytz==2023.3.post1
+typing-extensions==4.8.0
+numpy==1.26.2  # Для pandas
+
+# Разработка и тестирование (опционально)
+pytest==7.4.3
+httpx==0.25.2
+python-jose[cryptography]==3.3.0  # Если нужно JWT
+passlib[bcrypt]==1.7.4  # Если нужно хэширование паролей

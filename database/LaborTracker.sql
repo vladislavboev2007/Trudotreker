@@ -2,10 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.5
--- Dumped by pg_dump version 17.5
+\restrict rSJOL8kc5tHOY7kaUq3abNppf1z8cP8odjSeZc881HdAtWskr0bhwCV2varlUOR
 
--- Started on 2025-10-13 20:11:42
+-- Dumped from database version 18.1
+-- Dumped by pg_dump version 18.1
+
+-- Started on 2026-02-18 20:36:54
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -24,7 +26,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 218 (class 1259 OID 25181)
+-- TOC entry 219 (class 1259 OID 24577)
 -- Name: Employee; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -37,7 +39,7 @@ CREATE TABLE public."Employee" (
 ALTER TABLE public."Employee" OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 25180)
+-- TOC entry 220 (class 1259 OID 24582)
 -- Name: Employee_empId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -53,8 +55,8 @@ CREATE SEQUENCE public."Employee_empId_seq"
 ALTER SEQUENCE public."Employee_empId_seq" OWNER TO postgres;
 
 --
--- TOC entry 4807 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 4923 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: Employee_empId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -62,7 +64,7 @@ ALTER SEQUENCE public."Employee_empId_seq" OWNED BY public."Employee"."empId";
 
 
 --
--- TOC entry 220 (class 1259 OID 25188)
+-- TOC entry 221 (class 1259 OID 24583)
 -- Name: Task; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -80,7 +82,7 @@ CREATE TABLE public."Task" (
 ALTER TABLE public."Task" OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 25187)
+-- TOC entry 222 (class 1259 OID 24591)
 -- Name: Task_taskId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -96,8 +98,8 @@ CREATE SEQUENCE public."Task_taskId_seq"
 ALTER SEQUENCE public."Task_taskId_seq" OWNER TO postgres;
 
 --
--- TOC entry 4808 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 4924 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: Task_taskId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -105,7 +107,7 @@ ALTER SEQUENCE public."Task_taskId_seq" OWNED BY public."Task"."taskId";
 
 
 --
--- TOC entry 4646 (class 2604 OID 25184)
+-- TOC entry 4760 (class 2604 OID 24592)
 -- Name: Employee empId; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -113,7 +115,7 @@ ALTER TABLE ONLY public."Employee" ALTER COLUMN "empId" SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 4647 (class 2604 OID 25191)
+-- TOC entry 4761 (class 2604 OID 24593)
 -- Name: Task taskId; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -121,8 +123,8 @@ ALTER TABLE ONLY public."Task" ALTER COLUMN "taskId" SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4799 (class 0 OID 25181)
--- Dependencies: 218
+-- TOC entry 4914 (class 0 OID 24577)
+-- Dependencies: 219
 -- Data for Name: Employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -158,31 +160,45 @@ COPY public."Employee" ("empId", "FIO") FROM stdin;
 
 
 --
--- TOC entry 4801 (class 0 OID 25188)
--- Dependencies: 220
+-- TOC entry 4916 (class 0 OID 24583)
+-- Dependencies: 221
 -- Data for Name: Task; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Task" ("taskId", name, description, start, final, date, "empId") FROM stdin;
-17	Разработать чистое	Спроектировать здания и ограждения	\N	\N	2025-10-07	4
-18	43	erer	\N	\N	2025-10-06	2
-19	svdWSSF	SFFSD	20:42:17	20:42:31	2025-10-03	1
-20	Задача №1	Описание первой задачи.	21:20:23	05:20:23	2025-10-07	1
-21	Задача №2	Описание второй задачи.	21:20:23	07:20:23	2025-10-07	2
-22	Задача №3	Описание третьей задачи.	21:20:23	09:20:23	2025-10-07	4
-23	Задача №4	Описание четвертой задачи.	21:20:23	11:20:23	2025-10-07	5
-24	Задача №5	Описание пятой задачи.	21:20:23	13:20:23	2025-10-07	6
-25	Задача №6	Описание шестой задачи.	21:20:23	15:20:23	2025-10-07	7
-26	Задача №7	Описание седьмой задачи.	21:20:23	17:20:23	2025-10-07	1
-27	Задача №8	Описание восьмой задачи.	21:20:23	19:20:23	2025-10-07	2
-28	Задача №9	Описание девятой задачи.	21:20:23	21:20:23	2025-10-07	4
-29	Задача №10	Описание десятой задачи.	21:20:23	23:20:23	2025-10-07	5
+64	Оформиь отчет		10:00:00	12:00:00	2026-02-16	33
+65	Оформить отчет отчет по практике	Должен включать в себя руководство пользователя, руководство программиста и методика тестирования и испытания.	09:00:00	11:10:00	2026-02-17	4
+54	Анализ производительности	Тестирование под нагрузкой	\N	\N	2026-01-21	30
+57	Создание диаграмм	Визуализация данных	\N	\N	2026-01-25	33
+58	Багфикс	Исправление критических ошибок	\N	\N	2026-01-27	34
+59	Интеграция с внешним API	Подключение к платежной системе	\N	\N	2026-01-28	35
+60	Обновление БД	Миграция данных	\N	\N	2026-01-30	36
+61	Планирование спринта	Подготовка задач на следующий спринт	\N	\N	2026-02-01	37
+62	Код ревью	Проверка кода коллег	\N	\N	2026-02-02	38
+63	Создание презентации	Подготовка к демо	\N	\N	2026-02-03	39
+47	Разработка API	Создание REST API для системы	10:10:10	14:11:00	2026-01-12	1
+49	Документация	Написание технической документации	10:00:00	13:00:00	2026-01-14	4
+50	Оптимизация запросов	Оптимизация SQL запросов к БД	09:40:00	10:50:00	2026-01-15	5
+51	Фронтенд разработка	Верстка интерфейса пользователя	16:00:00	18:00:00	2026-01-16	6
+52	Рефакторинг кода	Улучшение структуры кода	13:00:00	14:00:00	2026-01-17	7
+53	Развертывание	Деплой на тестовый сервер	15:50:00	17:05:00	2026-01-20	29
+55	Обучение стажера	Обучение новичка работе с системой	19:02:05.468323	19:02:48.077612	2026-01-23	31
+77	Разработка модуля авторизации	Создание формы входа, JWT-токены	\N	\N	2026-02-17	1
+78	Вёрстка страницы статистики	Адаптивная вёрстка, графики	\N	\N	2026-02-17	2
+79	Тестирование API	Написание тестов для эндпоинтов	\N	\N	2026-02-18	4
+80	Настройка сервера	Развёртывание на Ubuntu, настройка nginx	\N	\N	2026-02-18	5
+81	Документирование кода	Написание docstring и комментариев	\N	\N	2026-02-19	6
+82	Исправление багов	Поиск и устранение ошибок в интерфейсе	\N	\N	2026-02-19	7
+83	Оптимизация запросов к БД	Добавление индексов, анализ планов	\N	\N	2026-02-20	29
+84	Создание отчётов PDF	Генерация PDF с графиками	\N	\N	2026-02-20	30
+85	Импорт данных из Excel	Реализация массового импорта задач	\N	\N	2026-02-21	1
+86	Рефакторинг кода	Улучшение структуры проекта	\N	\N	2026-02-21	2
 \.
 
 
 --
--- TOC entry 4809 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 4925 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: Employee_empId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -190,16 +206,16 @@ SELECT pg_catalog.setval('public."Employee_empId_seq"', 49, true);
 
 
 --
--- TOC entry 4810 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 4926 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: Task_taskId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Task_taskId_seq"', 29, true);
+SELECT pg_catalog.setval('public."Task_taskId_seq"', 86, true);
 
 
 --
--- TOC entry 4649 (class 2606 OID 25186)
+-- TOC entry 4763 (class 2606 OID 24595)
 -- Name: Employee Employee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -208,7 +224,7 @@ ALTER TABLE ONLY public."Employee"
 
 
 --
--- TOC entry 4651 (class 2606 OID 25195)
+-- TOC entry 4765 (class 2606 OID 24597)
 -- Name: Task Task_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -217,7 +233,7 @@ ALTER TABLE ONLY public."Task"
 
 
 --
--- TOC entry 4652 (class 2606 OID 25196)
+-- TOC entry 4766 (class 2606 OID 24598)
 -- Name: Task fk_employee; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -225,9 +241,11 @@ ALTER TABLE ONLY public."Task"
     ADD CONSTRAINT fk_employee FOREIGN KEY ("empId") REFERENCES public."Employee"("empId") ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
--- Completed on 2025-10-13 20:11:42
+-- Completed on 2026-02-18 20:36:55
 
 --
 -- PostgreSQL database dump complete
 --
+
+\unrestrict rSJOL8kc5tHOY7kaUq3abNppf1z8cP8odjSeZc881HdAtWskr0bhwCV2varlUOR
 
