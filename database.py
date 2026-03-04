@@ -38,4 +38,4 @@ try:
         # Создаем таблицы
         Base.metadata.create_all(bind=engine)
 except Exception as e:
-    print(f"❌ Ошибка подключения: {e}")
+    print(f"❌ Ошибка подключения: \n {e}")
