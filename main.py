@@ -32,14 +32,8 @@ from reportlab.graphics.charts.piecharts import Pie
 from reportlab.graphics.charts.legends import Legend
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-<<<<<<< HEAD
 import matplotlib.pyplot as plt
-=======
-<<<<<<< HEAD
-=======
-import matplotlib.pyplot as plt
->>>>>>> 3b593ec20d441839d92f4f7eed4332dedc25bb94
->>>>>>> 973ed2619aa01167424b67824488cdcb2959400d
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
