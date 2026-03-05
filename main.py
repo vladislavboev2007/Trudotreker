@@ -1506,12 +1506,9 @@ def delete_all_employees(db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Ошибка при удалении: {str(e)}")
 
-
-
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="127.0.0.1",
-        port=7000,
-        reload=True  # ← Добавьте эту строку
+        reload=True
     )
